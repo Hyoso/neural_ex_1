@@ -3,8 +3,8 @@ using System;
 
 public class Neuron
 {
-    public List<double> m_deltaWeights; // difference in weights when doing forward/backprop
-    public List<double> m_outputWeights;
+    public List<double> m_deltaWeights = new List<double>(); // difference in weights when doing forward/backprop
+    public List<double> m_outputWeights = new List<double>();
     private double m_output;
     private int m_myIndex;
     private double m_gradient;
@@ -48,7 +48,6 @@ public class Neuron
         return m_output;
     }
 
-
     /// <summary>
     /// main calculation functions
     /// takes in output from previous layer
@@ -63,6 +62,7 @@ public class Neuron
         {
             // multiple the previous layers output value (this current neurons input) by previous layers outputweight to me
             // and add to the sum
+            //sum += previousLayer.m_neurons[i].GetOutputValue() * previousLayer.m_neurons[i].m_outputWeights[m_myIndex];
             sum += previousLayer.m_neurons[i].GetOutputValue() * previousLayer.m_neurons[i].m_outputWeights[m_myIndex];
         }
 
@@ -91,6 +91,7 @@ public class Neuron
         return 1.0 - (x * x);
     }
 
+    // gradients keep the neuron progressing further
     public void CalculateOutputGradients(double targetValue)
     {
         double delta = targetValue - m_output;
@@ -105,7 +106,6 @@ public class Neuron
 
     public void UpdateInputWeights(NeuralLayer prevLayer)
     {
-
         // update weights in previous layer
         for (int i = 0; i != prevLayer.m_neurons.Count; i++)
         {

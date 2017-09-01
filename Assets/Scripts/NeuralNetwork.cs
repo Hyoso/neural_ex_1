@@ -37,6 +37,17 @@ public class NeuralNetwork : MonoBehaviour
             // set bias value of this layer
             m_layers[i].m_neurons[m_layers[i].m_neurons.Count - 1].SetOutputValue(1.0);
         }
+
+        List<double> inputVals = new List<double>(); // for feedforwarding
+        List<double> targetVals = new List<double>(); // for backprop
+        List<double> results = new List<double>();
+
+        inputVals.Add(1.0);
+        inputVals.Add(0.0);
+        FeedForward(inputVals);
+        return;
+        BackPropogation(targetVals);
+        GetResults(results);
     }
 
     void FeedForward(List<double> input)
@@ -57,7 +68,7 @@ public class NeuralNetwork : MonoBehaviour
         for (int i = 1; i < m_layers.Count; i++)
         {
             // for each neuron
-            for (int j = 0; j < m_layers[i].m_neurons.Count; j++)
+            for (int j = 0; j < m_layers[i].m_neurons.Count - 1; j++) // minus one from count because we ignore the bias neuron
             {
                 m_layers[i].m_neurons[j].FeedForward(m_layers[i - 1]);
             }
@@ -131,6 +142,11 @@ public class NeuralNetwork : MonoBehaviour
         for (int i = 0; i < outputLayerNeuronCount; i++)
         {
             results.Add(m_layers[m_layers.Count - 1].m_neurons[i].GetOutputValue());
+        }
+
+        for (int i = 0; i != results.Count; i++)
+        {
+            print(results[i]);
         }
     }
 }
